@@ -8,39 +8,34 @@ alter table netflix_ rename to  netflix_data ;
 select * from netflix_data;
 desc netflix_data;
 # QUESTIONS:-
--- What is the count the total number of records in the netflix_data table.
+--1. What is the count the total number of records in the netflix_data table.
 select count(*) from netflix_data;#'97'
 
 select * from netflix_data;
--- What is the count the number of TV shows and movies separately
+--2.  What is the count the number of TV shows and movies separately
 select count(*) from netflix_data where type="movie";#55
 select count(*) from netflix_data where type="TV show";#42
 
-Find the top director with the most content on Netflix
+-- 3. Find the top director with the most content on Netflix
 select * from netflix_data ;
 SELECT  director, count(title) as no_titles from netflix_data where director is not null group by director order by no_titles desc ;#Toshiya Shinohara
 
-# Find the most recently added title.
+-- 4. Find the most recently added title.
 select title ,date_added  from netflix_data where min(date_added);
-# What is  the Minimum release year for TV shows and movies
+-- 5. What is  the Minimum release year for TV shows and movies
 select min(release_year) from netflix_data where type="TV show";#'1994'
 select min(release_year) from netflix_data where type="Movie";#'1975'
 select * from netflix_data;
-# Find the top country with the most content on Netflix. 
+-- 6. Find the top country with the most content on Netflix. 
 SELECT  country, count(title) as no_titles from netflix_data where country is not null group by country order by no_titles desc ;#United States
 select country from netflix_data where max(count(country)) group by country;
-# Find the longest duration movie
+-- 7. Find the longest duration movie
 SELECT *
 FROM netflix_data
 WHERE type = 'Movie'
 ORDER BY CAST(SUBSTRING_INDEX(duration, ' ', 1) AS UNSIGNED) DESC#SUBSTRING_INDEX(duration, ' ', 1) → picks the number before the space.#CAST(... AS UNSIGNED) → converts that text "120" into a number so we can sort by it.
 LIMIT 1;#  CAST is used to convert datatype from string to int ans as singned means numerical
-
-
-
-
-
-# Find the longest duration movie/tv show
+-- 8. Find the longest duration movie/tv show
 SELECT *,
   CASE 
     WHEN duration LIKE '%Season%' THEN 
@@ -52,10 +47,6 @@ FROM netflix_data
 ORDER BY duration_in_min DESC
 LIMIT 1;#The Great British Baking Show
 
-
------------------------------------------------------
-# substring_index function is used to  sepaerate string same as split function in pandas
-#substring_index(string," "(separator),nth split you want(1)) extrated out put is string so we have to convert to int  by cast functionto do aggreagate functions
 
 
 
